@@ -3,15 +3,13 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="com.world.aeromexico.Flight">
+      <class name="com.world.aeromexico.Vacations">
         <methods>
-          <include name="vacations"/>
+          <include name="Vacation"/>
           <include name="BrowserSetup"/>
-          <include name="Hotels"/>
-          <include name="searchFlight"/>
-          <include name="afterTest"/>
+          <include name="closeBrowser"/>
         </methods>
-      </class> <!-- com.world.aeromexico.Flight -->
+      </class> <!-- com.world.aeromexico.Vacations -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
