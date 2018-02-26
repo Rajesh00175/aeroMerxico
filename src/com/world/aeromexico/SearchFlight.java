@@ -30,63 +30,59 @@ import org.testng.annotations.AfterTest;
 public class SearchFlight {
 	WebDriver aeroDriver;
 	String testURL = "https://world.aeromexico.com/en/uk";
-	
-	@BeforeTest(alwaysRun=true)		
-	@Parameters("BROWSER")	
+
+	@BeforeTest(alwaysRun = true)
+	@Parameters("BROWSER")
 	public void BrowserSetup(String BROWSER) throws Exception {
-		if(BROWSER.equalsIgnoreCase("firefox"))
-		{
+		if (BROWSER.equalsIgnoreCase("firefox")) {
 			String aeroDriverPathFirefox = "D:\\Testing\\geckodriver.exe";
 			System.setProperty("webdriver.gecko.driver", aeroDriverPathFirefox);
 			aeroDriver = new FirefoxDriver();
-			aeroDriver.manage().window().maximize();			
-		}
-		else if(BROWSER.equalsIgnoreCase("chrome"))
-		{
+			aeroDriver.manage().window().maximize();
+			System.out.println("Opening Firefox Driver...");
+		} else if (BROWSER.equalsIgnoreCase("chrome")) {
 			String aeroDriverPathChrome = "D:\\Testing\\chromedriver_win32\\chromedriver.exe";
 			System.setProperty("webdriver.chrome.driver", aeroDriverPathChrome);
 			aeroDriver = new ChromeDriver();
+			aeroDriver.manage().window().maximize();
+			System.out.println("Opening Chrome Driver...");
 		}
 	}
-	
-  @Test
-  public void search() throws ParseException, IOException, InterruptedException {
-	  	aeroDriver.get(testURL);
-	  	aeroDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-	  	WebElement travelingTo, travelingFrom, currencyChange;
+
+	@Test
+	public void search() throws ParseException, IOException, InterruptedException {
+		aeroDriver.get(testURL);
+		aeroDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		WebElement travelingTo, travelingFrom, currencyChange;
 		FileInputStream FIS = null;
-		//Read Data From Excel Sheet.
-		
-		File scr =    new File(System.getProperty("user.dir")+"\\TestData", "Flight_Booking.xlsx");
+		// Read Data From Excel Sheet.
+		File scr = new File(System.getProperty("user.dir") + "\\TestData", "Flight_Booking.xlsx");
 		FIS = new FileInputStream(scr);
 		XSSFWorkbook aeroMexicoWB = new XSSFWorkbook(FIS);
-		System.out.println("Workbook = "+aeroMexicoWB);
-      Sheet Sheet1 = aeroMexicoWB.getSheet("Sheet1");
-	    ///TO READ ALL DATA FROM SHEET
-	    int totalRows = Sheet1.getLastRowNum()-Sheet1.getFirstRowNum();   		
-	    aeroDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		for(int row=1; row <= totalRows;row++)
-		{
+		System.out.println("Workbook = " + aeroMexicoWB);
+		Sheet Sheet1 = aeroMexicoWB.getSheet("Sheet1");
+		/// TO READ ALL DATA FROM SHEET
+		int totalRows = Sheet1.getLastRowNum() - Sheet1.getFirstRowNum();
+		aeroDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		for (int row = 1; row <= totalRows; row++) {
 			String To = Sheet1.getRow(row).getCell(1).getStringCellValue();
-			System.out.println("Data From Excell Sheet - To Location "+To);
-			//driver.get("https://www.facebook.com/");
-			
-			
-			String From= Sheet1.getRow(row).getCell(2).getStringCellValue();
-			System.out.println("Data From Excell Sheet - From Location "+From);
-			
+			System.out.println("Data From Excell Sheet - To Location " + To);
+			// driver.get("https://www.facebook.com/");
+
+			String From = Sheet1.getRow(row).getCell(2).getStringCellValue();
+			System.out.println("Data From Excell Sheet - From Location " + From);
+
 			String testDepartureDate = Sheet1.getRow(row).getCell(3).getStringCellValue();
-			System.out.println("Data From Excell Sheet - Departure Date :"+testDepartureDate);
-			String testReturnDate =  Sheet1.getRow(row).getCell(4).getStringCellValue();
-			System.out.println("Data From Excell Sheet - Return Date :"+testReturnDate);
+			System.out.println("Data From Excell Sheet - Departure Date :" + testDepartureDate);
+			String testReturnDate = Sheet1.getRow(row).getCell(4).getStringCellValue();
+			System.out.println("Data From Excell Sheet - Return Date :" + testReturnDate);
 			String testAdult = Sheet1.getRow(row).getCell(5).getStringCellValue();
-			System.out.println("Data From Excell Sheet - Adults :"+testAdult);
+			System.out.println("Data From Excell Sheet - Adults :" + testAdult);
 			String testChild = Sheet1.getRow(row).getCell(6).getStringCellValue();
-			System.out.println("Data From Excell Sheet - Child :"+testChild);
-									
-			Thread.sleep(1000);	
-			
-			
+			System.out.println("Data From Excell Sheet - Child :" + testChild);
+
+			Thread.sleep(1000);
+
 			currencyChange = aeroDriver.findElement(By.xpath("//*[@id='flight']/fieldset/div[2]/div"));
 
 			/// xpath("//div[@class=\"select\"]"));
@@ -110,28 +106,25 @@ public class SearchFlight {
 			List<WebElement> travelingTOO = aeroDriver.findElements(By.xpath("//ul[@id='ui-id-3']/li"));
 			for (WebElement travlTo : travelingTOO) {
 				String toDestination = travlTo.getText();
-				if(toDestination.equalsIgnoreCase(To)) {
+				if (toDestination.equalsIgnoreCase(To)) {
 					travlTo.click();
 					break;
 				}
-				
+
 			}
 			aeroDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			travelingFrom = aeroDriver.findElement(By.id("to"));
 			travelingFrom.sendKeys("L");
 			List<WebElement> travelingFROM = aeroDriver.findElements(By.xpath("//ul[@id='ui-id-4']/li"));
-			for(WebElement travlFrom : travelingFROM) {
+			for (WebElement travlFrom : travelingFROM) {
 				String fromDestination = travlFrom.getText();
-				if(fromDestination.equalsIgnoreCase(From)) {
+				if (fromDestination.equalsIgnoreCase(From)) {
 					travlFrom.click();
 					break;
 				}
 			}
-			
-			
 			aeroDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-			//String testDepartureDate = "30/01/2018";
+			// String testDepartureDate = "30/01/2018";
 			SimpleDateFormat source = new SimpleDateFormat("dd/MM/yyyy");
 			Date parseDateDeparture = source.parse(testDepartureDate);
 			SimpleDateFormat sdfDepartureDate = new SimpleDateFormat("EEE MMMM dd yyyy");
@@ -144,8 +137,7 @@ public class SearchFlight {
 			String testDepartureMonth = splitDepartureDate[1];
 			System.out.println("Test Departure Day----" + testDepartureDay);
 			System.out.println("Test Departure Month ----" + testDepartureMonth);
-
-			//String testReturnDate = "31/01/2018";
+			// String testReturnDate = "31/01/2018";
 			SimpleDateFormat returnSource = new SimpleDateFormat("dd/MM/yyyy");
 			Date parseReturnDate = returnSource.parse(testReturnDate);
 			SimpleDateFormat sdfReturnDate = new SimpleDateFormat("EEE MMMM dd yyyy");
@@ -163,47 +155,48 @@ public class SearchFlight {
 			WebElement departureDateELE;
 			departureDateELE = aeroDriver.findElement(By.id("date-init"));
 			departureDateELE.click();
-			
-			while(!aeroDriver.findElement(By.className("ui-datepicker-title")).getText().contains(testDepartureMonth))     // Handle the  month
-	        {
-				aeroDriver.findElement(By.linkText("Next")).click();            
+
+			while (!aeroDriver.findElement(By.className("ui-datepicker-title")).getText().contains(testDepartureMonth)) // Handle
+																														// the
+																														//month
+			{
+				aeroDriver.findElement(By.linkText("Next")).click();
 			}
 			int depDateCount = aeroDriver.findElements(By.className("ui-state-default")).size();
-	        
-	        for(int i=0;i<depDateCount;i++)
-	         
-	        {
-	         
-	           String depDateValue =   aeroDriver.findElements(By.className("ui-state-default")).get(i).getText();
-	           if(depDateValue.equalsIgnoreCase(testDepartureDay))
-	            {
-	        	   aeroDriver.findElements(By.className("ui-state-default")).get(i).click();
-	              break;
-	            }
-	         
-	        }
+			for (int i = 0; i < depDateCount; i++)
+			{
+
+				String depDateValue = aeroDriver.findElements(By.className("ui-state-default")).get(i).getText();
+				if (depDateValue.equalsIgnoreCase(testDepartureDay)) {
+					aeroDriver.findElements(By.className("ui-state-default")).get(i).click();
+					break;
+				}
+
+			}
 
 			// pick date for Return date Element
 
 			WebElement returnDateELE;
 			returnDateELE = aeroDriver.findElement(By.id("date-end"));
 			returnDateELE.click();
-			while(!aeroDriver.findElement(By.className("ui-datepicker-title")).getText().contains(testReturnMonth))     // Handle the  month
-	        {
-				aeroDriver.findElement(By.linkText("Next")).click();            
+			while (!aeroDriver.findElement(By.className("ui-datepicker-title")).getText().contains(testReturnMonth)) // Handle
+																														// the
+																														// month
+			{
+				aeroDriver.findElement(By.linkText("Next")).click();
 			}
-			
+
 			List<WebElement> return_m = aeroDriver.findElements(By.className("ui-state-default"));
-			
-			for(WebElement return_dayPick : return_m) {
+
+			for (WebElement return_dayPick : return_m) {
 				String returnDay = return_dayPick.getText();
-				if(returnDay.equalsIgnoreCase(testReturnDay)) {
+				if (returnDay.equalsIgnoreCase(testReturnDay)) {
 					return_dayPick.click();
 					break;
 				}
-				
+
 			}
-					
+
 			// Select Adult
 			WebElement adult = aeroDriver.findElement(By.xpath("//div[@id='adultsF']"));
 			adult.click();
@@ -228,20 +221,20 @@ public class SearchFlight {
 					break;
 				}
 			}
-			
 			aeroDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
-			WebElement searchButton = aeroDriver.findElement(By.xpath("//div[@class='input-row two buttons']/input[@class='btn b-orange']"));
-			searchButton.click();			
+			WebElement searchButton = aeroDriver
+					.findElement(By.xpath("//div[@class='input-row two buttons']/input[@class='btn b-orange']"));
+			searchButton.click();
 			aeroDriver.manage().timeouts().implicitlyWait(1, TimeUnit.MINUTES);
-			
+
 			try {
 				String expected_Page_Title = "Flights Page Aeroméxico booking";
-				//below fluent wait only for Firefox only
-				WebDriverWait wait = new WebDriverWait(aeroDriver,20);
+				// below fluent wait only for Firefox only
+				WebDriverWait wait = new WebDriverWait(aeroDriver, 20);
 				wait.until(ExpectedConditions.titleIs(expected_Page_Title));
 				String actual_Page_Title = aeroDriver.getTitle();
 				System.out.println(actual_Page_Title);
-				
+
 				Assert.assertEquals(actual_Page_Title, expected_Page_Title);
 				System.out.println("Test Pass...");
 				Sheet1.getRow(row).createCell(7).setCellValue("Pass");
@@ -269,16 +262,14 @@ public class SearchFlight {
 				System.out.println(e.getMessage());
 			}
 		}
-		aeroMexicoWB.close();		
-		
-  }
-  
-  	
+		aeroMexicoWB.close();
 
-  @AfterTest
-  public void afterTest() {	
-	  aeroDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-	  aeroDriver.quit();
-  }
+	}
+
+	@AfterTest
+	public void afterTest() {
+		aeroDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		aeroDriver.quit();
+	}
 
 }

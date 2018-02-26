@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite thread-count="2" guice-stage="DEVELOPMENT" name="Failed suite [Suite]" parallel="tests">
-  <test name="ChromeTest(failed)" parallel="tests">
-    <parameter name="browser" value="Chrome"/>
+  <test name="chromeTest(failed)" parallel="tests">
+    <parameter name="BROWSER" value="chrome"/>
     <classes>
       <class name="com.world.aeromexico.SearchFlight">
         <methods>
@@ -12,9 +12,9 @@
         </methods>
       </class> <!-- com.world.aeromexico.SearchFlight -->
     </classes>
-  </test> <!-- ChromeTest(failed) -->
-  <test name="FirefoxTest(failed)" parallel="tests">
-    <parameter name="browser" value="Firefox"/>
+  </test> <!-- chromeTest(failed) -->
+  <test name="firefoxTest(failed)" parallel="tests">
+    <parameter name="BROWSER" value="firefox"/>
     <classes>
       <class name="com.world.aeromexico.SearchFlight">
         <methods>
@@ -24,5 +24,5 @@
         </methods>
       </class> <!-- com.world.aeromexico.SearchFlight -->
     </classes>
-  </test> <!-- FirefoxTest(failed) -->
+  </test> <!-- firefoxTest(failed) -->
 </suite> <!-- Failed suite [Suite] -->

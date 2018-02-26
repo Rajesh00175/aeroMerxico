@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
-  <test name="Default test(failed)">
+<suite thread-count="2" guice-stage="DEVELOPMENT" name="Failed suite [Suite]" parallel="tests">
+  <test name="chromeTest(failed)" parallel="tests">
+    <parameter name="BROWSER" value="chrome"/>
     <classes>
-      <class name="com.world.aeromexico.Vacations">
+      <class name="com.world.aeromexico.SearchFlight">
         <methods>
-          <include name="Vacation"/>
+          <include name="search"/>
+          <include name="afterTest"/>
           <include name="BrowserSetup"/>
-          <include name="closeBrowser"/>
         </methods>
-      </class> <!-- com.world.aeromexico.Vacations -->
+      </class> <!-- com.world.aeromexico.SearchFlight -->
     </classes>
-  </test> <!-- Default test(failed) -->
-</suite> <!-- Failed suite [Default suite] -->
+  </test> <!-- chromeTest(failed) -->
+  <test name="firefoxTest(failed)" parallel="tests">
+    <parameter name="BROWSER" value="firefox"/>
+    <classes>
+      <class name="com.world.aeromexico.SearchFlight">
+        <methods>
+          <include name="search"/>
+          <include name="afterTest"/>
+          <include name="BrowserSetup"/>
+        </methods>
+      </class> <!-- com.world.aeromexico.SearchFlight -->
+    </classes>
+  </test> <!-- firefoxTest(failed) -->
+</suite> <!-- Failed suite [Suite] -->
